@@ -1,7 +1,5 @@
 import UIKit
 
-var str = "Hello, playground"
-
 
 /*
  Program for array rotation
@@ -10,6 +8,11 @@ var str = "Hello, playground"
  */
 
 func arrayRotationTempArray(array:[Int], rotateBy:Int ) -> [Int] {
+    /*
+     O(n) time
+     O(d) space
+     */
+    
     var result = [Int]()
     var temp = [Int]()
     var ptr = 0 // primary pointer, iterates over entire array
@@ -35,11 +38,49 @@ func arrayRotationTempArray(array:[Int], rotateBy:Int ) -> [Int] {
     for i in temp {
         result.append(i)
     }
-    
-    print(result)
+
     return result
     
 }
+
+func arrayRotationOneByOne(array:[Int], rotateBy:Int ) -> [Int] {
+    /*
+     O (n * d) Time
+     O(1) Space
+     */
+    var result = [Int]()
+    
+    func leftRotateByOne(arr:[Int]) -> [Int] {
+      
+        let temp = arr[0]
+        var result = arr
+        var i = 0
+        
+        for _ in 0..<arr.count-1 { // count is -1 because it needs to put the temp in the last spot
+            result[i] = arr[i+1]
+            i += 1
+           
+        }
+        result[i] = temp
+        return result
+    }
+    
+    for _ in 0..<rotateBy {
+        
+        if result.count > 0 {
+            result = leftRotateByOne(arr: result)
+        } else {
+            result = leftRotateByOne(arr: array)
+            
+        }
+    }
+
+    return result
+
+}
+
+
+
 let a = ([1,2,3,4,5,6,7], 2, [3,4,5,6,7,1,2])
 let b = ([9,5,3],2, [3,9,5])
 let c = ([4,4,4],4, [4,4,4])
@@ -47,8 +88,10 @@ let d = ([3,4],3,[4,3])
 let e = ([4,3],3,[3,4])
 let l = [a,b,c,d,e]
 
-for n in l {
-    assert(arrayRotationTempArray(array: n.0, rotateBy: n.1)==n.2)
-}
+print(arrayRotationOneByOne(array:d.0, rotateBy:d.1 ))
+
+//for n in l {
+//    assert(arrayRotationTempArray(array: n.0, rotateBy: n.1)==n.2)
+//}
 
 
